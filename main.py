@@ -1,4 +1,4 @@
 from board import Board
+from art import art
 
-board = Board()
-board.board_draw()
+

@@ -35,5 +35,15 @@ for i in range(col_len):
             linhas.append(' ')
     matriz.append(linhas)
 
+# for row in matriz:
+#     print(''.join(row))
+
+matriz[2][3] = 'X'
+matriz[5][9] = 'X'
+matriz[8][15] = 'X'
+matriz[2][15] = 'O'
+matriz[5][3] = 'O'
+matriz[8][3] = 'O'
+
 for row in matriz:
     print(''.join(row))
