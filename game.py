@@ -8,53 +8,57 @@ class Player:
 
 
 class Game:
-    def __init__(self, name: str, symbol: str, board: Board):
-        self.player = Player(name, symbol)
+    def __init__(self, player: Player, board: Board):
+        self.player = player
         self.board = board
-        self.play_coordinates = {
-            'A1': self.board.board_matrix[2][3],
-            'A2': self.board.board_matrix[2][9],
-            'A3': self.board.board_matrix[2][15],
-            'B1': self.board.board_matrix[5][3],
-            'B2': self.board.board_matrix[5][9],
-            'B3': self.board.board_matrix[5][15],
-            'C1': self.board.board_matrix[8][3],
-            'C2': self.board.board_matrix[8][9],
-            'C3': self.board.board_matrix[8][15],
-        }
 
-    def make_a_play(self, board_pos: str, player_: Player):
+    def make_a_move(self, board_pos: str):
         board_pos.upper()
-        is_repeated = True
-        while is_repeated:
-            if self.play_coordinates[board_pos] != ' ':
-                print('This position already filled. Try another one.')
-            else:
-                self.play_coordinates[board_pos] = player_.symbol
-                is_repeated = False
+        i = self.board.play_coordinates[board_pos][0]
+        j = self.board.play_coordinates[board_pos][1]
+        self.board.board_matrix[i][j] = self.player.symbol
+
+    def is_occupied(self, board_pos) -> bool:
+        board_pos.upper()
+        i = self.board.play_coordinates[board_pos][0]
+        j = self.board.play_coordinates[board_pos][1]
+        if self.board.board_matrix[i][j] in ['X', 'O']:
+            return True
 
     def game_over(self) -> bool:
         # horizontal
-        if self.play_coordinates['A1'] == self.play_coordinates['B1'] == self.play_coordinates['C1']:
-            return True
-        elif self.play_coordinates['A2'] == self.play_coordinates['B2'] == self.play_coordinates['C2']:
-            return True
-        elif self.play_coordinates['A3'] == self.play_coordinates['B3'] == self.play_coordinates['C3']:
+        if self.win_test_possibilities(self.board.lines):
             return True
         # vertical
-        elif self.play_coordinates['A1'] == self.play_coordinates['A2'] == self.play_coordinates['A3']:
-            return True
-        elif self.play_coordinates['B1'] == self.play_coordinates['B2'] == self.play_coordinates['B3']:
-            return True
-        elif self.play_coordinates['C1'] == self.play_coordinates['C2'] == self.play_coordinates['C3']:
+        elif self.win_test_possibilities(self.board.rows):
             return True
         # diagonal
-        elif self.play_coordinates['A1'] == self.play_coordinates['B2'] == self.play_coordinates['C3']:
+        elif self.win_test_possibilities(self.board.diagonals):
             return True
-        elif self.play_coordinates['C1'] == self.play_coordinates['B2'] == self.play_coordinates['A3']:
+        # draw
+        elif self.draw():
             return True
         else:
             return False
 
+    def win_test_possibilities(self, possibilitie_list) -> bool:
+        for index in range(len(possibilitie_list)):
+            test_list = []
+            for key in possibilitie_list[index]:
+                i = possibilitie_list[index][key][0]
+                j = possibilitie_list[index][key][1]
+                test_list.append(self.board.board_matrix[i][j])
+            test_set = set(test_list)
+            if len(test_set) == 1 and ' ' not in test_set:
+                return True
+        return False
 
-
+    def draw(self) -> bool:
+        all_board_positions = []
+        for key in self.board.play_coordinates:
+            i = self.board.play_coordinates[key][0]
+            j = self.board.play_coordinates[key][1]
+            all_board_positions.append(self.board.board_matrix[i][j])
+            if ' ' not in all_board_positions:
+                return True
+        return False

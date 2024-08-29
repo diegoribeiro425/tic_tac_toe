@@ -17,7 +17,68 @@ line_indexes = {
 
 class Board:
     def __init__(self):
-        self.board_matrix = []
+        self.matrix = []
+        self.board_matrix = self.board_construction()
+        self.play_coordinates = {
+            'A1': [2, 3],
+            'A2': [2, 9],
+            'A3': [2, 15],
+            'B1': [5, 3],
+            'B2': [5, 9],
+            'B3': [5, 15],
+            'C1': [8, 3],
+            'C2': [8, 9],
+            'C3': [8, 15],
+        }
+        self.lines = [
+            {
+                'A1': [2, 3],
+                'B1': [5, 3],
+                'C1': [8, 3]
+            },
+            {
+                'A2': [2, 9],
+                'B2': [5, 9],
+                'C2': [8, 9]
+            },
+            {
+                'A3': [2, 15],
+                'B3': [5, 15],
+                'C3': [8, 15]
+            }
+
+        ]
+        self.rows = [
+            {
+                'A1': [2, 3],
+                'A2': [2, 9],
+                'A3': [2, 15]
+            },
+            {
+                'B1': [5, 3],
+                'B2': [5, 9],
+                'B3': [5, 15]
+            },
+            {
+                'C1': [8, 3],
+                'C2': [8, 9],
+                'C3': [8, 15]
+            }
+        ]
+        self.diagonals = [
+
+            {
+                'A1': [2, 3],
+                'B2': [5, 9],
+                'C3': [8, 15]
+            },
+            {
+                'A3': [2, 15],
+                'B2': [5, 9],
+                'C1': [8, 3]
+            }
+
+        ]
 
     def board_construction(self):
         for i in range(col_len):
@@ -40,10 +101,10 @@ class Board:
                     line.append('_')
                 else:
                     line.append(' ')
-            self.board_matrix.append(line)
-        return self.board_matrix
+            self.matrix.append(line)
+        return self.matrix
 
     def board_draw(self):
-        self.board_construction()
+
         for row in self.board_matrix:
             print(''.join(row))
