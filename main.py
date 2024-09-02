@@ -15,32 +15,25 @@ is_gameover = False
 board.board_draw()
 
 
-def player_input(player: Player, game_player: Game):
+def check(player: Player, game_player: Game):
     move = input(f'{player.name} move: ').upper()
-    while game_player.is_occupied(move):
-        print('This quadrant is already occupied.')
+    while game_player.move_check(move):
+        print('Invalid move.')
         move = input(f'{player.name} move: ').upper()
+    return move
 
 
 while not is_gameover:
-
     # player 1 move
-    p1_move = input(f'{player1.name} move: ').upper()
-    while game_player1.is_occupied(p1_move):
-        print('This quadrant is already occupied.')
-        p1_move = input(f'{player1.name} move: ').upper()
+    p1_move = check(player1, game_player1)
     game_player1.make_a_move(p1_move)
     board.board_draw()
     if game_player1.game_over():
         is_gameover = True
         break
     # player 2 move
-    p2_move = input(f'{player2.name} move: ').upper()
-    while game_player2.is_occupied(p2_move):
-        print('This quadrant is already occupied.')
-        p2_move = input(f'{player2.name} move: ').upper()
+    p2_move = check(player2, game_player2)
     game_player2.make_a_move(p2_move)
     board.board_draw()
     if game_player2.game_over():
         is_gameover = True
-    print(is_gameover)

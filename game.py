@@ -13,13 +13,13 @@ class Game:
         self.board = board
 
     def make_a_move(self, board_pos: str):
-        board_pos.upper()
         i = self.board.play_coordinates[board_pos][0]
         j = self.board.play_coordinates[board_pos][1]
         self.board.board_matrix[i][j] = self.player.symbol
 
-    def is_occupied(self, board_pos) -> bool:
-        board_pos.upper()
+    def move_check(self, board_pos: str) -> bool:
+        if board_pos not in self.board.play_coordinates:
+            return True
         i = self.board.play_coordinates[board_pos][0]
         j = self.board.play_coordinates[board_pos][1]
         if self.board.board_matrix[i][j] in ['X', 'O']:
@@ -28,15 +28,19 @@ class Game:
     def game_over(self) -> bool:
         # horizontal
         if self.win_test_possibilities(self.board.lines):
+            print(f'{self.player.name} wins!')
             return True
         # vertical
         elif self.win_test_possibilities(self.board.rows):
+            print(f'{self.player.name} wins!')
             return True
         # diagonal
         elif self.win_test_possibilities(self.board.diagonals):
+            print(f'{self.player.name} wins!')
             return True
         # draw
         elif self.draw():
+            print('DRAW!')
             return True
         else:
             return False
@@ -59,6 +63,6 @@ class Game:
             i = self.board.play_coordinates[key][0]
             j = self.board.play_coordinates[key][1]
             all_board_positions.append(self.board.board_matrix[i][j])
-            if ' ' not in all_board_positions:
-                return True
+        if ' ' not in all_board_positions:
+            return True
         return False
