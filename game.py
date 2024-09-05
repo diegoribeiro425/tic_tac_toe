@@ -5,6 +5,7 @@ class Player:
     def __init__(self, name: str, symbol: str):
         self.name = name
         self.symbol = symbol
+        self.score = 0
 
 
 class Game:
@@ -29,14 +30,17 @@ class Game:
         # horizontal
         if self.win_test_possibilities(self.board.lines):
             print(f'{self.player.name} wins!')
+            self.player.score += 1
             return True
         # vertical
         elif self.win_test_possibilities(self.board.rows):
             print(f'{self.player.name} wins!')
+            self.player.score += 1
             return True
         # diagonal
         elif self.win_test_possibilities(self.board.diagonals):
             print(f'{self.player.name} wins!')
+            self.player.score += 1
             return True
         # draw
         elif self.draw():
@@ -66,3 +70,13 @@ class Game:
         if ' ' not in all_board_positions:
             return True
         return False
+
+    def check(self, player_: Player):
+        move = input(f'{player_.name} move: ').upper()
+        while self.move_check(move):
+            print('Invalid move.')
+            move = input(f'{player_.name} move: ').upper()
+        return move
+
+    def scoreboard(self, player_: Player):
+        print(f'\n{self.player.name} {self.player.score} X {player_.score} {player_.name}')
